@@ -11,6 +11,7 @@ struct FrameworkDisplayView: View {
     
     var framework:Framework
     @Binding var isShowingDetailView:Bool
+    @State private var isShowingSafariView:Bool=false
     var body: some View {
         VStack{
             HStack{
@@ -31,12 +32,17 @@ struct FrameworkDisplayView: View {
                 .font(.body)
                 .padding()
             Spacer()
-            
-            AFButton(text:"Learn More")
+            Button{
+                isShowingSafariView=true
+            }label:{
+                AFButton(text:"Learn More")
+            }
         }
+        .sheet(isPresented: $isShowingSafariView , content:{
+            SafariView(url: URL(string: framework.urlString) ?? URL(string: "www.apple.com")!)
+        })
     }
 }
-
 #Preview {
     FrameworkDisplayView(framework: MockData.sampleFramework,isShowingDetailView:.constant(false))
 }
